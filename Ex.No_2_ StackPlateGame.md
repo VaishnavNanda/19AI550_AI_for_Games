@@ -1,7 +1,7 @@
 # Ex.No: 2 Implementation of Stack Plate game using Queue 
-### DATE:           
-### Name: ADHITHYARAM D
-### REGISTER NUMBER : 212222230008
+### DATE:    14/8/24       
+### Name: VAISHNAV NANDA
+### REGISTER NUMBER : 212222240112
 ### AIM: 
 To write a python program to simulate the process of stacking plates.
 ### Algorithm:
