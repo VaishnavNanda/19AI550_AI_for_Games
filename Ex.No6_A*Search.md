@@ -1,6 +1,6 @@
 # Ex.No: 6  Implementation of Zombie survival game using A* search 
-### DATE: 13/09/24                                                                          
-### REGISTER NUMBER : 212222230008
+### DATE:                                                                            
+### REGISTER NUMBER : 212222240026
 ### AIM: 
 To write a python program to simulate the Zomibie Survival game using A* Search 
 ### Algorithm:
@@ -13,52 +13,39 @@ To write a python program to simulate the Zomibie Survival game using A* Search
 7.  In main, create the obstacles and move the player by Key movements up, down,left and right 
 10.  Update the display every time 
 11.  Stop the program
-### Program:
-
+ ### Program:
 ```python
-# Define a large negative and positive value to represent infinity
-INF = float('inf')
 
-# Alpha-Beta Pruning function
-def alpha_beta_pruning(depth, node_index, maximizing_player, values, alpha, beta):
-    # Base case: leaf node is reached
-    if depth == 3:
-        return values[node_index]
-    
-    if maximizing_player:
-        max_eval = -INF
-        # Recur for the two children of the current node
-        for i in range(2):
-            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, False, values, alpha, beta)
-            max_eval = max(max_eval, eval)
-            alpha = max(alpha, eval)
-            
-            # Prune the branch
-            if beta <= alpha:
-                break
-        return max_eval
+import math
+def minimax (curDepth, nodeIndex,maxTurn, scores,targetDepth):
+    # base case : targetDepth reached
+    if (curDepth == targetDepth):
+        return scores[nodeIndex]
+    if (maxTurn):
+        return max(minimax(curDepth + 1, nodeIndex * 2,
+                    False, scores, targetDepth),
+                   minimax(curDepth + 1, nodeIndex * 2 + 1,
+                    False, scores, targetDepth))
+
     else:
-        min_eval = INF
-        # Recur for the two children of the current node
-        for i in range(2):
-            eval = alpha_beta_pruning(depth + 1, node_index * 2 + i, True, values, alpha, beta)
-            min_eval = min(min_eval, eval)
-            beta = min(beta, eval)
-            
-            # Prune the branch
-            if beta <= alpha:
-                break
-        return min_eval
+        return min(minimax(curDepth + 1, nodeIndex * 2,
+                     True, scores, targetDepth),
+                   minimax(curDepth + 1, nodeIndex * 2 + 1,
+                     True, scores, targetDepth))
 
-# Driver code : 
-if __name__ == "__main__":
-    # This is the terminal/leaf node values of the game tree
-    values = [3, 5, 6, 9, 1, 2, 0, -1]
+# Driver code
+scores = [3, 5, 2, 9, 12, 5, 23, 20]
+treeDepth = math.log(len(scores), 2) # calculate depth of node  log 8 (base 2) = 3)
+print("The optimal value is : ", end = "")
+print(minimax(0, 0, True, scores, treeDepth))
 
-    print("Optimal value:", alpha_beta_pruning(0, 0, True, values, -INF, INF))
 ```
+
 ### Output:
-<img width="1128" alt="377505777-24ec26e2-cbce-4aeb-b866-0918b98e1d39" src="https://github.com/user-attachments/assets/0a7976c5-c8c1-47e2-be9a-f53331355daa">
+
+<img width="1128" alt="370132935-248faa8b-e4f8-4c6e-9f2c-61aeac27ef3a" src="https://github.com/user-attachments/assets/24ec26e2-cbce-4aeb-b866-0918b98e1d39">
+
+
 
 
 ### Result:

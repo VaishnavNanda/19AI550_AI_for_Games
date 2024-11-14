@@ -1,7 +1,6 @@
 # Ex.No: 2 Implementation of Stack Plate game using Queue 
-### DATE:           
-### Name: ADHITHYARAM D
-### REGISTER NUMBER : 212222230008
+### DATE: 11/08/24                                                                        
+### REGISTER NUMBER : 212222240026
 ### AIM: 
 To write a python program to simulate the process of stacking plates.
 ### Algorithm:
@@ -70,7 +69,9 @@ if __name__ == "__main__":
 ```
 
 ### Output:
-![image](https://github.com/user-attachments/assets/53cc5fd0-4f1a-48f0-8796-ab91aa1ba845)
+![Screenshot 2024-08-11 133752](https://github.com/user-attachments/assets/4023310e-4b1c-4247-b0e7-38441363b177)
+
+
 
 ### Result:
 Thus the simple Stack plate game was implemented using data structure Stack.

@@ -1,6 +1,6 @@
 # Ex.No: 4  Implementation of Snake game using Steering behaviors
-### DATE:                                                                            
-### REGISTER NUMBER : 212222230008
+### DATE: 18/08/24                                                                       
+### REGISTER NUMBER : 212222240026
 ### AIM: 
 To write a python program to simulate the snake game using steering behaviors
 ### Algorithm:
@@ -18,97 +18,96 @@ To write a python program to simulate the snake game using steering behaviors
  ### Program:
 ```python
 import pygame
+import math
 import sys
-import random
 
 # Initialize Pygame
 pygame.init()
 
-# Constants
+# Set up display
 WIDTH, HEIGHT = 800, 600
-BACKGROUND_COLOR = (0, 0, 0)
-SNAKE_COLOR = (0, 255, 0)
-FOOD_COLOR = (255, 0, 0)
-SNAKE_SIZE = 20
-FOOD_SIZE = 20
+window = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Kinematic Movement Example")
+
+# Colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+# Character settings
+CHAR_SIZE = 20
 MAX_SPEED = 5
-FPS = 15
 
-# Create the screen
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Steering Behavior Snake Game")
-
-# Clock to control the frame rate
-clock = pygame.time.Clock()
-
-class Snake:
-    def _init_(self):
-        self.body = [pygame.Vector2(WIDTH // 2, HEIGHT // 2)]
-        self.direction = pygame.Vector2(MAX_SPEED, 0)
-        self.grow = False
+# Character class
+class Character:
+    def _init_(self, x, y, color):
+        self.position = pygame.Vector2(x, y)
+        self.velocity = pygame.Vector2(0, 0)
+        self.color = color
 
     def seek(self, target):
-        direction = target - self.body[0]
-        if direction.length() > 0:
-            self.direction = direction.normalize() * MAX_SPEED
+        desired_velocity = target - self.position
+        if desired_velocity.length() > 0:  # Ensure the vector is not zero
+            desired_velocity = desired_velocity.normalize() * MAX_SPEED
+        self.velocity = desired_velocity
 
-    def move(self):
-        if self.grow:
-            self.body.append(self.body[-1])
-            self.grow = False
-        for i in range(len(self.body) - 1, 0, -1):
-            self.body[i] = pygame.Vector2(self.body[i - 1])
-        self.body[0] += self.direction
-        self.wrap_around()
+    def flee(self, target):
+        desired_velocity = self.position - target
+        if desired_velocity.length() > 0:  # Ensure the vector is not zero
+            desired_velocity = desired_velocity.normalize() * MAX_SPEED
+        self.velocity = desired_velocity
 
-    def wrap_around(self):
-        if self.body[0].x < 0: self.body[0].x = WIDTH
-        elif self.body[0].x >= WIDTH: self.body[0].x = 0
-        if self.body[0].y < 0: self.body[0].y = HEIGHT
-        elif self.body[0].y >= HEIGHT: self.body[0].y = 0
+    def update(self):
+        self.position += self.velocity
 
     def draw(self, surface):
-        for segment in self.body:
-            pygame.draw.rect(surface, SNAKE_COLOR, pygame.Rect(segment.x, segment.y, SNAKE_SIZE, SNAKE_SIZE))
+        pygame.draw.circle(surface, self.color, (int(self.position.x), int(self.position.y)), CHAR_SIZE)
 
-    def check_collision(self, food_position):
-        return pygame.Vector2.distance_to(self.body[0], food_position) < SNAKE_SIZE
+# Main function
+def main():
+    clock = pygame.time.Clock()
+    player = Character(WIDTH // 2, HEIGHT // 2, WHITE)
+    target = Character(WIDTH // 4, HEIGHT // 4, RED)
 
-class Food:
-    def _init_(self):
-        self.position = pygame.Vector2(random.randint(0, WIDTH - FOOD_SIZE), random.randint(0, HEIGHT - FOOD_SIZE))
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    def randomize_position(self):
-        self.position = pygame.Vector2(random.randint(0, WIDTH - FOOD_SIZE), random.randint(0, HEIGHT - FOOD_SIZE))
+        # Get mouse position
+        mouse_pos = pygame.Vector2(pygame.mouse.get_pos())
 
-    def draw(self, surface):
-        pygame.draw.rect(surface, FOOD_COLOR, pygame.Rect(self.position.x, self.position.y, FOOD_SIZE, FOOD_SIZE))
+        # Basic controls: seek or flee based on mouse button
+        if pygame.mouse.get_pressed()[0]:  # Left button - Seek
+            player.seek(mouse_pos)
+        elif pygame.mouse.get_pressed()[2]:  # Right button - Flee
+            player.flee(mouse_pos)
+        else:
+            player.velocity = pygame.Vector2(0, 0)  # Stop if no button is pressed
 
-# Create instances
-snake = Snake()
-food = Food()
+        # Update player position
+        player.update()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+        # Draw everything
+        window.fill(BLACK)
+        player.draw(window)
+        target.draw(window)
+        pygame.display.flip()
 
-    snake.seek(food.position)
-    snake.move()
+        # Cap the frame rate
+        clock.tick(60)
 
-    if snake.check_collision(food.position):
-        snake.grow = True
-        food.randomize_position()
+    pygame.quit()
+    sys.exit()
 
-    screen.fill(BACKGROUND_COLOR)
-    food.draw(screen)
-    snake.draw(screen)
-    pygame.display.flip()
-    clock.tick(FPS)
+if _name_ == "_main_":
+    main()
 ```
+
 ### Output:
-<img src= "https://github.com/user-attachments/assets/24c8d266-4701-4f37-a65a-f9b54b26d2e4" width="400" height="400">
+
+![Screenshot 2024-08-17 092026](https://github.com/user-attachments/assets/fae0ccb4-1ac5-4321-ac33-4e3e5ceaaa87)
+
 
 ### Result:
 Thus the simple snake game was implemented.
